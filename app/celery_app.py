@@ -9,7 +9,7 @@ print(f"RabbitMQ: {settings.RABBIT_MQ_USERNAME}, {settings.RABBIT_MQ_PASSWORD}")
 
 celery = Celery(
     'worker',
-    broker=f'amqp://rabbitmq:82a26209419433fca00dee84152220f2@rabbitmq-test-loqd//',
+    broker=f'amqp://rabbitmq:82a26209419433fca00dee84152220f2@rabbitmq-test-loqd:5672//',
     backend='rpc://'
 )
 
