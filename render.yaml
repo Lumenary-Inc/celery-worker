@@ -14,7 +14,7 @@ services:
     region: ohio
     runtime: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "uvicorn main:app"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port 8000"
     autoDeploy: false
     envVars:
       - key: CELERY_BROKER_URL
@@ -30,9 +30,3 @@ services:
     envVars:
       - key: CELERY_BROKER_URL
         value: "amqp://guest:guest@localhost:5672//"
-  - type: redis
-    name: celery-redis
-    region: ohio
-    plan: starter # we choose a plan with persistence to ensure tasks are not lost upon restart
-    maxmemoryPolicy: noeviction # recommended policy for queues
-    ipAllowList: [] # only allow internal connections
