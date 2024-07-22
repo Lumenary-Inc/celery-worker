@@ -1,50 +1,15 @@
 services:
-  - type: worker
-    name: celery-worker
-    region: ohio
-    runtime: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "celery -A app.celery_app worker --loglevel=info -Q lumenary_composite_queue,lumenary_campaign_queue,lumenary_pipeline_queue,lumenary_call_queue --concurrency=4 --prefetch-multiplier=1"
-    autoDeploy: false
-    envVars:
-      - key: CELERY_BROKER_URL
-        value: "amqp://guest:guest@localhost:5672//"
-  - type: web
-    name: app
-    region: ohio
-    runtime: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "uvicorn main:app --host 0.0.0.0 --port 8000"
-    autoDeploy: false
-    envVars:
-      - key: CELERY_BROKER_URL
-        value: "amqp://guest:guest@localhost:5672//"
-
-  - type: web
-    name: flower
-    region: ohio
-    plan: free
-    runtime: python
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "celery flower --app tasks --loglevel info"
-    autoDeploy: false
-    envVars:
-      - key: CELERY_BROKER_URL
-        value: "amqp://guest:guest@localhost:5672//"
-  - type: web
+- type: web
+  name: rabbitmq
+  env: docker
+  envVars:
+  - key: RABBITMQ_ERLANG_COOKIE
+    generateValue: true
+  - key: RABBITMQ_DEFAULT_USER
+    value: rabbitmq
+  - key: RABBITMQ_DEFAULT_PASS
+    generateValue: true
+  disk:
     name: rabbitmq
-    env: docker
-    runtime: Docker
-    disk:
-      name: rabbitmq
-      mountPath: /var/lib/rabbitmq
-      sizeGB: 10
-    envVars:
-    - key: RABBITMQ_ERLANG_COOKIE
-      generateValue: true
-    - key: RABBITMQ_DEFAULT_USER
-      value: rabbitmq
-    - key: RABBITMQ_DEFAULT_PASS
-      generateValue: true
-
-
+    mountPath: /var/lib/rabbitmq
+    sizeGB: 10
