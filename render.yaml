@@ -34,6 +34,7 @@ services:
   - type: web
     name: rabbitmq
     env: docker
+    runtime: Docker
     disk:
       name: rabbitmq
       mountPath: /var/lib/rabbitmq
