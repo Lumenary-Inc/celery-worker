@@ -32,7 +32,7 @@ Werkzeug==2.1.1
 wrapt==1.14.0
 zipp==3.8.0
 
-deepgram
+deepgram-sdk
 aio_pika
 supabase
 fastapi
