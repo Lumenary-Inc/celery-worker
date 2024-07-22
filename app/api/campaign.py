@@ -21,10 +21,10 @@ async def create_campaign_endpoint(campaign: dict):
 
         campaign = campaigns_db.create_campaign(campaign)
 
-        chain(
-            campaign_creation_job.s(campaign.model_dump()).set(queue='lumenary_campaign_queue'),
-            process_campaign_calls_job.s().set(queue='lumenary_composite_queue')
-        ).apply_async()
+        # chain(
+        #     campaign_creation_job.s(campaign.model_dump()).set(queue='lumenary_campaign_queue'),
+        #     process_campaign_calls_job.s().set(queue='lumenary_composite_queue')
+        # ).apply_async()
 
         return {"message": "Campaign created successfully", "id": campaign.rid}
     except Exception as e:
