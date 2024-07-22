@@ -22,6 +22,8 @@ class Settings:
     DOLBY_AUDIO_KEY: str = os.getenv("DOLBY_AUDIO_KEY")
     DOLBY_AUDIO_SECRET: str = os.getenv("DOLBY_AUDIO_SECRET")
     DEEPGRAM_API_KEY: str = os.getenv("DEEPGRAM_API_KEY")
+    RABBIT_MQ_USERNAME: str = os.getenv("RABBITMQ_DEFAULT_USER")
+    RABBIT_MQ_PASSWORD: str = os.getenv("RABBITMQ_DEFAULT_PASS")
 
 
 settings = Settings()

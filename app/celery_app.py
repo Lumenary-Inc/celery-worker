@@ -1,12 +1,15 @@
 import logging
 from celery import Celery
+from app.config import settings
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+print(f"RabbitMQ: {settings.RABBIT_MQ_USERNAME}, {settings.RABBIT_MQ_PASSWORD}")
+
 celery = Celery(
     'worker',
-    broker='amqp://guest:guest@localhost:5672//',
+    broker=f'amqp://{settings.RABBIT_MQ_USERNAME}:{settings.RABBIT_MQ_PASSWORD}@localhost:5672//',
     backend='rpc://'
 )
 

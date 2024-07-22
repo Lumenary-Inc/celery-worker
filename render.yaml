@@ -19,6 +19,7 @@ services:
     envVars:
       - key: CELERY_BROKER_URL
         value: "amqp://guest:guest@localhost:5672//"
+
   - type: web
     name: flower
     region: ohio
@@ -30,3 +31,19 @@ services:
     envVars:
       - key: CELERY_BROKER_URL
         value: "amqp://guest:guest@localhost:5672//"
+  - type: web
+    name: rabbitmq
+    region: ohio
+    runtime: docker
+    envVars:
+      - key: RABBITMQ_ERLANG_COOKIE
+        generateValue: true
+      - key: RABBITMQ_DEFAULT_USER
+        value: rabbitmq
+      - key: RABBITMQ_DEFAULT_PASS
+        generateValue: true
+    disk:
+      name: rabbitmq
+      mountPath: /var/lib/rabbitmq
+      sizeGB: 10
+
