@@ -31,3 +31,9 @@ wcwidth==0.2.5
 Werkzeug==2.1.1
 wrapt==1.14.0
 zipp==3.8.0
+
+
+fastapi~=0.111.1
+pydantic~=2.8.2
+python-dotenv~=1.0.1
+uvicorn~=0.30.3
