@@ -8,6 +8,7 @@ services:
     autoDeploy: false
     envVars:
       - key: CELERY_BROKER_URL
+        value: "amqp://guest:guest@localhost:5672//"
   - type: web
     name: app
     region: ohio
@@ -17,6 +18,7 @@ services:
     autoDeploy: false
     envVars:
       - key: CELERY_BROKER_URL
+        value: "amqp://guest:guest@localhost:5672//"
   - type: web
     name: flower
     region: ohio
@@ -27,6 +29,7 @@ services:
     autoDeploy: false
     envVars:
       - key: CELERY_BROKER_URL
+        value: "amqp://guest:guest@localhost:5672//"
   - type: redis
     name: celery-redis
     region: ohio
