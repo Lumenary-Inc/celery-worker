@@ -4,27 +4,19 @@ services:
     region: ohio
     runtime: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "celery --app tasks worker --loglevel info --concurrency 4"
+    startCommand: "celery -A app.celery_app worker --loglevel=info -Q lumenary_composite_queue,lumenary_campaign_queue,lumenary_pipeline_queue,lumenary_call_queue --concurrency=4 --prefetch-multiplier=1"
     autoDeploy: false
     envVars:
       - key: CELERY_BROKER_URL
-        fromService:
-          name: celery-redis
-          type: redis
-          property: connectionString
   - type: web
     name: app
     region: ohio
     runtime: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn app:app"
+    startCommand: "uvicorn main:app"
     autoDeploy: false
     envVars:
       - key: CELERY_BROKER_URL
-        fromService:
-          name: celery-redis
-          type: redis
-          property: connectionString
   - type: web
     name: flower
     region: ohio
@@ -35,13 +27,17 @@ services:
     autoDeploy: false
     envVars:
       - key: CELERY_BROKER_URL
-        fromService:
-          type: redis
-          name: celery-redis
-          property: connectionString
-  - type: redis
-    name: celery-redis
-    region: ohio
-    plan: starter # we choose a plan with persistence to ensure tasks are not lost upon restart
-    maxmemoryPolicy: noeviction # recommended policy for queues
-    ipAllowList: [] # only allow internal connections
+  - type: web
+    name: rabbitmq
+    env: docker
+    envVars:
+    - key: RABBITMQ_ERLANG_COOKIE
+      generateValue: true
+    - key: RABBITMQ_DEFAULT_USER
+      value: rabbitmq
+    - key: RABBITMQ_DEFAULT_PASS
+      generateValue: true
+    disk:
+      name: rabbitmq
+      mountPath: /var/lib/rabbitmq
+      sizeGB: 10
